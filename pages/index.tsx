@@ -41,7 +41,7 @@ const PokemonListItem: React.FC<PokemonListItemProps> = ({
   };
 
   return (
-    <li className="cursor-pointer hover:bg-blue-100 hover:text-blue-500">
+    <li className="cursor-pointer px-2 hover:bg-blue-100 hover:text-blue-500">
       <Link href={`/pokemon/${pokemon.name}`}>
         <span className="capitalize">
           {highlightMatch(pokemon.name, search)}
