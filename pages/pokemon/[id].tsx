@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import { Pokemon } from "../../interfaces/Pokemon";
 import Link from "next/link";
 
+import { GrSearch } from "react-icons/gr";
+
 interface DetailsPageProps {
   pokemon: Pokemon;
 }
@@ -35,8 +37,12 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ pokemon }) => {
 
   return (
     <div className="container mx-auto p-4">
-      <Link href={`/`}>
-        <span>Return to search</span>
+      <Link
+        href={`/`}
+        className="flex items-center px-2 cursor-pointer hover:bg-blue-100 hover:text-blue-500"
+      >
+        <GrSearch />
+        <span className="ml-2">Return to search</span>
       </Link>
       <h1 className="text-3xl font-bold capitalize text-center my-4">
         {pokemon.name}
