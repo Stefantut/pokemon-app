@@ -1,7 +1,12 @@
 import { GetServerSideProps, NextPage } from "next";
 import React from "react";
 import { useRouter } from "next/router";
-import { Pokemon } from "../../interfaces/Pokemon";
+import {
+  Pokemon,
+  PokemonAbility,
+  PokemonStat,
+  PokemonType,
+} from "../../interfaces/Pokemon";
 import Link from "next/link";
 
 import { GrSearch } from "react-icons/gr";
@@ -28,8 +33,6 @@ const DetailsPage: NextPage<DetailsPageProps> = () => {
 
   const { id } = router.query as { id: string },
     { data: pokemon, isLoading, isError } = usePokemon(id);
-
-  console.info("Pokemon data: ", pokemon);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -77,7 +80,7 @@ const DetailsPage: NextPage<DetailsPageProps> = () => {
           <div className="my-2">
             <h2 className="text-xl font-semibold">Types</h2>
             <ul className="list-disc pl-5">
-              {pokemon.types.map((type, index) => (
+              {pokemon.types.map((type: PokemonType, index: number) => (
                 <li key={index} className="capitalize">
                   {type.type.name}
                 </li>
@@ -88,19 +91,21 @@ const DetailsPage: NextPage<DetailsPageProps> = () => {
           <div className="my-2">
             <h2 className="text-xl font-semibold">Abilities</h2>
             <ul className="list-disc pl-5">
-              {pokemon.abilities.map((ability, index) => (
-                <li key={index} className="capitalize">
-                  {ability.ability.name} (Hidden:{" "}
-                  {ability.is_hidden ? "Yes" : "No"})
-                </li>
-              ))}
+              {pokemon.abilities.map(
+                (ability: PokemonAbility, index: number) => (
+                  <li key={index} className="capitalize">
+                    {ability.ability.name} (Hidden:{" "}
+                    {ability.is_hidden ? "Yes" : "No"})
+                  </li>
+                )
+              )}
             </ul>
           </div>
 
           <div className="my-2">
             <h2 className="text-xl font-semibold">Stats</h2>
             <ul className="list-disc pl-5">
-              {pokemon.stats.map((stat, index) => (
+              {pokemon.stats.map((stat: PokemonStat, index: number) => (
                 <li key={index} className="capitalize">
                   {stat.stat.name}: {stat.base_stat}
                 </li>

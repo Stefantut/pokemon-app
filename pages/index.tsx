@@ -59,28 +59,30 @@ const HomePage: NextPage<HomePageProps> = ({ pokemons }) => {
   );
 
   return (
-    <div className="flex justify-center items-center">
-      <div>
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-gray-800 my-6">
-          Pokémon List
-        </h1>
-        <input
-          type="text"
-          placeholder="Search for a Pokémon..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="form-input px-4 py-1 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-blue-500 bg-blue-100"
-          style={{ caretColor: "blue" }}
-        />
-        <ul>
-          {filteredPokemons.map((pokemon) => (
-            <PokemonListItem
-              key={pokemon.name}
-              pokemon={pokemon}
-              search={search}
-            />
-          ))}
-        </ul>
+    <div className="flex justify-center">
+      <div className="max-w-xl mx-auto px-4" style={{ width: "500px" }}>
+        <div>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-gray-800 my-6">
+            Pokémon List
+          </h1>
+          <input
+            type="text"
+            placeholder="Search for a Pokémon..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="form-input px-4 py-1 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-blue-500 bg-blue-100"
+            style={{ caretColor: "blue" }}
+          />
+          <ul>
+            {filteredPokemons.map((pokemon) => (
+              <PokemonListItem
+                key={pokemon.name}
+                pokemon={pokemon}
+                search={search}
+              />
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );
