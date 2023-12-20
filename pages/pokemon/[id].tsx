@@ -5,6 +5,7 @@ import { Pokemon } from "../../interfaces/Pokemon";
 import Link from "next/link";
 
 import { GrSearch } from "react-icons/gr";
+import { usePokemon } from "@/hooks/usePokemon";
 
 interface DetailsPageProps {
   pokemon: Pokemon;
@@ -22,8 +23,25 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-const DetailsPage: NextPage<DetailsPageProps> = ({ pokemon }) => {
+const DetailsPage: NextPage<DetailsPageProps> = () => {
   const router = useRouter();
+
+  const { id } = router.query as { id: string },
+    { data: pokemon, isLoading, isError } = usePokemon(id);
+
+  console.info("Pokemon data: ", pokemon);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error loading Pokémon data</div>;
+  }
+
+  if (!pokemon) {
+    return <div>Pokémon not found</div>;
+  }
 
   const handlePrev = () => {
     if (pokemon.id > 1) {
