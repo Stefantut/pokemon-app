@@ -1,44 +1,43 @@
-import { GetServerSideProps, NextPage } from "next";
-import Link from "next/link";
-// import { useRouter } from "next/router";
+import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 
-interface Item {
-  id: number;
-  title: string;
-  description: string;
+interface PokemonDetails {
+  name: string;
 }
 
-interface PokemonDetailsProps {
-  item: Item;
+interface DetailsPageProps {
+  pokemon: PokemonDetails;
 }
 
-const PokemonDetails: NextPage<PokemonDetailsProps> = ({ item }) => {
+const DetailsPage: NextPage<DetailsPageProps> = ({ pokemon }) => {
+  console.log("pokemon data: ", pokemon);
   return (
     <div>
-      <h1>{item.title}</h1>
-      <p>{item.description}</p>
-      <Link href={`/`}>
-        <span>return home</span>
-      </Link>
+      <h1>{pokemon.name}</h1>
     </div>
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { id } = context.params as { id: string };
-  // Fetch item data based on ID
-  // Example: const item = await fetchItemData(id);
-  const item: Item = {
-    id: parseInt(id),
-    title: "Pokemon 1 title",
-    description: "Pokemon 1 Description",
-  }; // Replace with actual data fetch
+export const getStaticPaths: GetStaticPaths = async () => {
+  const paths = Array.from({ length: 151 }, (_, index) => ({
+    params: { id: (index + 1).toString() },
+  }));
+
+  return {
+    paths,
+    fallback: "blocking",
+  };
+};
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  const { id } = context.params!;
+  const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+  const pokemon: PokemonDetails = await res.json();
 
   return {
     props: {
-      item,
+      pokemon,
     },
   };
 };
 
-export default PokemonDetails;
+export default DetailsPage;
