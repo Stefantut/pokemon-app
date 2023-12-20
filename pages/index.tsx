@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import Link from "next/link";
 import { GetStaticProps, NextPage } from "next";
 
@@ -11,11 +12,23 @@ interface HomePageProps {
 }
 
 const HomePage: NextPage<HomePageProps> = ({ pokemons }) => {
+  const [search, setSearch] = useState("");
+
+  const filteredPokemons = pokemons.filter((pokemon) =>
+    pokemon.name.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div>
       <h1>Pokémon List</h1>
+      <input
+        type="text"
+        placeholder="Search for a Pokémon..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
       <ul>
-        {pokemons.map((pokemon, index) => (
+        {filteredPokemons.map((pokemon, index) => (
           <li key={pokemon.name}>
             <Link href={`/pokemon/${index + 1}`}>
               <span>{pokemon.name}</span>

@@ -1,4 +1,5 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import Link from "next/link";
 
 interface PokemonDetails {
   name: string;
@@ -13,6 +14,9 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ pokemon }) => {
   return (
     <div>
       <h1>{pokemon.name}</h1>
+      <Link href={`/`}>
+        <span>Return Home</span>
+      </Link>
     </div>
   );
 };
