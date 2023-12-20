@@ -6,10 +6,50 @@ interface Pokemon {
   name: string;
   url: string;
 }
+interface PokemonListItemProps {
+  pokemon: Pokemon;
+  search: string;
+}
 
 interface HomePageProps {
   pokemons: Pokemon[];
 }
+
+const PokemonListItem: React.FC<PokemonListItemProps> = ({
+  pokemon,
+  search,
+}) => {
+  const highlightMatch = (name: string, search: string): JSX.Element => {
+    if (!search.trim()) return <span>{name}</span>;
+
+    const regex = new RegExp(`(${search.trim()})`, "gi");
+    const parts = name.split(regex);
+
+    return (
+      <span>
+        {parts.map((part, index) =>
+          regex.test(part) ? (
+            <mark className="bg-yellow-200" key={index}>
+              {part}
+            </mark>
+          ) : (
+            part
+          )
+        )}
+      </span>
+    );
+  };
+
+  return (
+    <li className="cursor-pointer hover:bg-blue-100 hover:text-blue-500">
+      <Link href={`/pokemon/${pokemon.name}`}>
+        <span className="capitalize">
+          {highlightMatch(pokemon.name, search)}
+        </span>
+      </Link>
+    </li>
+  );
+};
 
 const HomePage: NextPage<HomePageProps> = ({ pokemons }) => {
   const [search, setSearch] = useState("");
@@ -33,12 +73,12 @@ const HomePage: NextPage<HomePageProps> = ({ pokemons }) => {
           style={{ caretColor: "blue" }}
         />
         <ul>
-          {filteredPokemons.map((pokemon, index) => (
-            <li key={pokemon.name} className="capitalize">
-              <Link href={`/pokemon/${pokemon.name}`}>
-                <span>{pokemon.name}</span>
-              </Link>
-            </li>
+          {filteredPokemons.map((pokemon) => (
+            <PokemonListItem
+              key={pokemon.name}
+              pokemon={pokemon}
+              search={search}
+            />
           ))}
         </ul>
       </div>
