@@ -1,6 +1,8 @@
 import { GetServerSideProps, NextPage } from "next";
 import React from "react";
+import { useRouter } from "next/router";
 import { Pokemon } from "../../interfaces/Pokemon";
+import Link from "next/link";
 
 interface DetailsPageProps {
   pokemon: Pokemon;
@@ -19,8 +21,23 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const DetailsPage: NextPage<DetailsPageProps> = ({ pokemon }) => {
+  const router = useRouter();
+
+  const handlePrev = () => {
+    if (pokemon.id > 1) {
+      router.push(`/pokemon/${pokemon.id - 1}`);
+    }
+  };
+
+  const handleNext = () => {
+    router.push(`/pokemon/${pokemon.id + 1}`);
+  };
+
   return (
     <div className="container mx-auto p-4">
+      <Link href={`/`}>
+        <span>Return to search</span>
+      </Link>
       <h1 className="text-3xl font-bold capitalize text-center my-4">
         {pokemon.name}
       </h1>
@@ -63,6 +80,21 @@ const DetailsPage: NextPage<DetailsPageProps> = ({ pokemon }) => {
             </li>
           ))}
         </ul>
+      </div>
+      <div className="flex justify-between my-4">
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={handlePrev}
+          disabled={pokemon.id <= 1}
+        >
+          Previous
+        </button>
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={handleNext}
+        >
+          Next
+        </button>
       </div>
     </div>
   );
