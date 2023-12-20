@@ -26,6 +26,8 @@ const HomePage: NextPage<HomePageProps> = ({ pokemons }) => {
         placeholder="Search for a Pokémon..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
+        className="form-input px-4 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-blue-500 bg-blue-100"
+        style={{ caretColor: "green" }}
       />
       <ul>
         {filteredPokemons.map((pokemon, index) => (
